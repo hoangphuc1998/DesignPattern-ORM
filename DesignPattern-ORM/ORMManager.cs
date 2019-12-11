@@ -20,23 +20,5 @@ namespace DesignPattern_ORM
             Console.WriteLine("Table Name: " + type.GetCustomAttribute<TableName>().tableName);
         }
         private Dictionary<string, string> featureMap = new Dictionary<string, string>();
-        public List<T> Find<T>()
-        {
-            return null;
-        }
-
-        public int Insert()
-        {
-            return 0;
-        }
-        public int Update()
-        {
-            return 0;
-        }
-
-        public int Delete()
-        {
-            return 0;
-        }
     }
 }
