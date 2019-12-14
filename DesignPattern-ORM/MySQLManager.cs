@@ -16,7 +16,10 @@ namespace DesignPattern_ORM
             String connString = GetConnectionString(host, port, database, username, password);
             connection = new MySqlConnection(connString);
         }
-
+        public override void Disconnect()
+        {
+            connection.Close();
+        }
         public string GetConnectionString(string host, int port, string database, string username, string password)
         {
             // Connection String.
@@ -24,7 +27,6 @@ namespace DesignPattern_ORM
                 + ";port=" + port + ";User Id=" + username + ";password=" + password;
             return connString;
         }
-
         public MySQLManager(string host, int port, string database, string username, string password)
         {
             try
@@ -74,15 +76,15 @@ namespace DesignPattern_ORM
             int rowCount = cmd.ExecuteNonQuery();
             return rowCount;
         }
-        public override Insert(string querry)
+        public override int Insert(string querry)
         {
             return ExcecuteQuerry(querry);
         }
-        public override Update(string querry)
+        public override int Update(string querry)
         {
             return ExcecuteQuerry(querry);
         }
-        public override Delete(string querry)
+        public override int Delete(string querry)
         {
             return ExcecuteQuerry(querry);
         }
