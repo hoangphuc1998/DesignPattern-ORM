@@ -8,17 +8,29 @@ namespace DesignPattern_ORM
 {
     class ORMManager<T>
     {
-        public ORMManager()
+        private Dictionary<string, string> featureMap = new Dictionary<string, string>();
+        private Dictionary<string, Type> typeMap = new Dictionary<string, Type>();
+        private string tableName;
+        private DBManager dbManager;
+        public ORMManager(DBManager dbManager)
         {
+            this.dbManager = dbManager;
             Type type = typeof(T);
             PropertyInfo[] propertyInfo = type.GetProperties();
             foreach (PropertyInfo pInfo in propertyInfo)
             {
-                Console.WriteLine(pInfo.Name);
-                Console.WriteLine(pInfo.GetCustomAttribute<Column>().columnName);
+                featureMap.Add(pInfo.Name, pInfo.GetCustomAttribute<Column>().columnName);
+                typeMap.Add(pInfo.Name, pInfo.PropertyType);
             }
-            Console.WriteLine("Table Name: " + type.GetCustomAttribute<TableName>().tableName);
+            this.tableName = type.GetCustomAttribute<TableName>().tableName;
+            this.dbManager = dbManager;
         }
-        private Dictionary<string, string> featureMap = new Dictionary<string, string>();
+        
+        
+        public int Insert(T obj)
+        {
+            //TODO: implement Insert
+            throw new NotImplementedException();
+        }
     }
 }

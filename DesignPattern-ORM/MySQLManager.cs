@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
-using Tutorial.SqlConn;
 using System.Data.Common;
 using System.Data;
 
@@ -15,6 +14,7 @@ namespace DesignPattern_ORM
         {
             String connString = GetConnectionString(host, port, database, username, password);
             connection = new MySqlConnection(connString);
+            connection.Open();
         }
         public override void Disconnect()
         {
@@ -39,11 +39,11 @@ namespace DesignPattern_ORM
                 Console.WriteLine("Connect Failed");
             }
         }
-        public override List<List<string>> Select(string querry)
+        public override List<List<string>> Select(string query)
         {
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = connection;
-            cmd.CommandText = querry;
+            cmd.CommandText = query;
             using (DbDataReader reader = cmd.ExecuteReader())
             {
                 int numCol = reader.FieldCount;
@@ -69,24 +69,25 @@ namespace DesignPattern_ORM
                 return res;
             }
         }
-        private int ExcecuteQuerry(string querry)
+        private int ExcecuteQuery(string query)
         {
             MySqlCommand cmd = connection.CreateCommand();
-            cmd.CommandText = querry;
+            cmd.CommandText = query;
+            cmd.Connection = connection;
             int rowCount = cmd.ExecuteNonQuery();
             return rowCount;
         }
-        public override int Insert(string querry)
+        public override int Insert(string query)
         {
-            return ExcecuteQuerry(querry);
+            return ExcecuteQuery(query);
         }
-        public override int Update(string querry)
+        public override int Update(string query)
         {
-            return ExcecuteQuerry(querry);
+            return ExcecuteQuery(query);
         }
-        public override int Delete(string querry)
+        public override int Delete(string query)
         {
-            return ExcecuteQuerry(querry);
+            return ExcecuteQuery(query);
         }
     }
 }

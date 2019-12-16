@@ -1,4 +1,4 @@
-use school;
+create database school;
 
 drop table if exists Students;
 drop table if exists Classes;

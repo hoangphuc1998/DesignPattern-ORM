@@ -8,9 +8,9 @@ namespace DesignPattern_ORM
     {
         public abstract void Connect(string host, int port, string database, string username, string password);
         public abstract void Disconnect();
-        public abstract List<Lis<string>> Select(string querry);
-        public abstract int Insert(string querry); //Return number of rows effected
-        public abstract int Update(string querry); //Return number of rows effected
-        public abstract int Delete(string querry); //Return number of rows effected
+        public abstract List<List<string>> Select(string query);
+        public abstract int Insert(string query); //Return number of rows effected
+        public abstract int Update(string query); //Return number of rows effected
+        public abstract int Delete(string query); //Return number of rows effected
     }
 }
