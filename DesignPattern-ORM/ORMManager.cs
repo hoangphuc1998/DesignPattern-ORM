@@ -9,10 +9,10 @@ namespace DesignPattern_ORM
     class ORMManager<T>
     {
         private Dictionary<string, string> featureMap = new Dictionary<string, string>();
-        private Dictionary<string, Type> typeMap = new Dictionary<string, Type>();
         private string tableName;
         private DBManager dbManager;
-        public ORMManager(DBManager dbManager)
+        private Parser parser;
+        public ORMManager(DBManager dbManager, Parser parser)
         {
             this.dbManager = dbManager;
             Type type = typeof(T);
@@ -20,10 +20,10 @@ namespace DesignPattern_ORM
             foreach (PropertyInfo pInfo in propertyInfo)
             {
                 featureMap.Add(pInfo.Name, pInfo.GetCustomAttribute<Column>().columnName);
-                typeMap.Add(pInfo.Name, pInfo.PropertyType);
             }
             this.tableName = type.GetCustomAttribute<TableName>().tableName;
             this.dbManager = dbManager;
+            this.parser = parser;
         }
         
         
