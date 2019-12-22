@@ -8,7 +8,6 @@ namespace DesignPattern_ORM
     class InsertQuery : ExecutableQuery
     {
         private Dictionary<string, Object> values;
-        private Dictionary<string, Type> types;
         public InsertQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, Object> values) : base(tableName, dbManager, parser)
         {
             this.values = values;
