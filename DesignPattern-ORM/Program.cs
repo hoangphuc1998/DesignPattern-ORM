@@ -7,8 +7,10 @@ namespace DesignPattern_ORM
     {
         static void Main(string[] args)
         {
-            ORMManager<Student> orm = new ORMManager<Student>();
             MySQLManager sql = new MySQLManager("localhost", 3306, "school", "root", "palo1234");
+            MySQLParser parser = new MySQLParser();
+            ORMManager<Student> orm = new ORMManager<Student>(sql, parser);
+            
             List<List<string>> s = sql.Select("SELECT * FROM Students");
             foreach (List<string> ss in s)
             {
