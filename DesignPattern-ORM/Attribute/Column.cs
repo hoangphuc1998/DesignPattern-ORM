@@ -12,9 +12,9 @@ namespace DesignPattern_ORM.Attribute
         public bool autoincrement {get;set;}
         public Column(string column, bool isKey = false, bool autoincrement = false)
         {
-            columnName = column;
-            isKey = isKey;
-            autoincrease = autoincrease;
+            this.columnName = column;
+            this.isKey = isKey;
+            this.autoincrement = autoincrement;
         }
     }
 }

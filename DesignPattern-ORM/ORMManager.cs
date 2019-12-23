@@ -1,6 +1,8 @@
 ﻿using DesignPattern_ORM.Attribute;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -42,18 +44,25 @@ namespace DesignPattern_ORM
         {
             Dictionary<string, Object> valueMap = new Dictionary<string, Object>();
             //Iterate through attributes of class
-            foreach(string attr in featureMap.Keys){
+            foreach(string attr in featureMap.Keys)
+            {
                 Object value = GetValue(obj, attr);
                 //Check if attribute is a list or dictionary
-                if (value is ICollection<> || obj is ICollection){
-                    continue;
+                if (!(value is ICollection) && !(obj is ICollection))
+                {
+                    if (autoincrementCols.Any(attr.Contains))
+                    {
+                        continue;
+                    }
+                    valueMap.Add(attr, value);
                 }
-                if (autoincrementCols.Any(attr.Contains)){
-                    continue;
-                }
-                valueMap.Add(attr, value);
             }
             return new InsertQuery(tableName, dbManager, parser, valueMap).Execute();
+        }
+
+        public int Delete(T obj)
+        {
+
         }
     }
 }

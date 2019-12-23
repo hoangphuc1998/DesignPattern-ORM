@@ -22,8 +22,19 @@ namespace DesignPattern_ORM
         [Column("Address")]
         public string address {get; set;}
         [Column("DOB")]
-        public Datetime DOB {get;set;}
+        public DateTime DOB {get;set;}
         [Column("ClassID")]
         public int classID {get;set;}
+
+        public Student(string name, bool isMale, string email, string phoneNumber, string address, DateTime dOB, int classID)
+        {
+            this.name = name;
+            this.isMale = isMale;
+            this.email = email;
+            this.phoneNumber = phoneNumber;
+            this.address = address;
+            DOB = dOB;
+            this.classID = classID;
+        }
     }
 }
