@@ -4,15 +4,16 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    class LessThan : Restriction
+    class Equal : Restriction
     {
-        public LessThan(string a, Object b) {
+        public Equal(string a, Object b)
+        {
             param = a;
             value = b;
         }
         public override string getRestrictionOperator()
         {
-            return "<";
+            return "=";
         }
     }
 }

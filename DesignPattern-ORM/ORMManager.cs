@@ -40,7 +40,7 @@ namespace DesignPattern_ORM
         }
         
         
-        public int Insert(T obj)
+        public InsertQuery Insert(T obj)
         {
             Dictionary<string, Object> valueMap = new Dictionary<string, Object>();
             //Iterate through attributes of class
@@ -57,12 +57,8 @@ namespace DesignPattern_ORM
                     valueMap.Add(attr, value);
                 }
             }
-            return new InsertQuery(tableName, dbManager, parser, valueMap).Execute();
+            return new InsertQuery(tableName, dbManager, parser, valueMap);
         }
 
-        public int Delete(T obj)
-        {
-
-        }
     }
 }
