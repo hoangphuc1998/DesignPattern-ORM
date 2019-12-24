@@ -5,7 +5,7 @@ namespace DesignPattern_ORM
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main2(string[] args)
         {
             MySQLManager sql = new MySQLManager("localhost", 3306, "school", "root", "palo1234");
             MySQLParser parser = new MySQLParser();
@@ -22,6 +22,11 @@ namespace DesignPattern_ORM
             //    }
             //    Console.WriteLine();
             //}
+        }
+        static void Main(string[] args)
+        {
+            Condition x = Condition.And(Condition.lt("x", 5), Condition.equal("L", "Asca"));
+            Console.WriteLine(x.toSQL());
         }
     }
 }

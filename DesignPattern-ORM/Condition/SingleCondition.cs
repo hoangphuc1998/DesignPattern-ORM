@@ -12,7 +12,7 @@ namespace DesignPattern_ORM
         public abstract string getLogic();
         public override string toSQL()
         {
-            return "( " + leftCondition.toSQL() + getLogic() + rightCondition.toSQL() + " )";
+            return "( " + leftCondition.toSQL() + " " + getLogic() + " " + rightCondition.toSQL() + " )";
         }
     }
 }

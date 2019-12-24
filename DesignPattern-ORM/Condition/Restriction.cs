@@ -5,7 +5,7 @@ using System.Text;
 namespace DesignPattern_ORM
 {
     abstract class Restriction:Condition
-    {
+    {   
         protected string param { get; set; }
         protected Object value { get; set; }
         public abstract string getRestrictionOperator();
