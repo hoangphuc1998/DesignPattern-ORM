@@ -1,4 +1,4 @@
-﻿using DesignPattern_ORM.Attribute;
+﻿using DesignPattern_ORM;
 using System;
 using System.Collections.Generic;
 using System.Text;

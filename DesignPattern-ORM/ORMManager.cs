@@ -1,4 +1,4 @@
-﻿using DesignPattern_ORM.Attribute;
+﻿using DesignPattern_ORM;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,5 +60,25 @@ namespace DesignPattern_ORM
             return new InsertQuery(tableName, dbManager, parser, valueMap);
         }
 
+        public DeleteQuery Delete(T obj)
+        {
+            Condition condition = Condition.Disjunction();
+            foreach(string attr in featureMap.Keys)
+            {
+                Object value = GetValue(obj, attr);
+                //Check if attribute is a list or dictionary
+                if (!(value is ICollection) && !(obj is ICollection))
+                {
+                    condition.Add(Condition.Equal(attr, value));
+                }
+            }
+            return new DeleteQuery(tableName, dbManager, parser, condition);
+        }
+
+        public DeleteQuery Delete(Condition condition)
+        {
+            return new DeleteQuery(tableName, dbManager, parser, condition);
+        }
+        
     }
 }

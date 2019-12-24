@@ -7,10 +7,13 @@ namespace DesignPattern_ORM
     class DeleteQuery : ExecutableQuery
     {
         Condition condition;
-        public DeleteQuery(string tableName, DBManager dbManager, Parser parser) : base(tableName, dbManager, parser) { }
+        public DeleteQuery(string tableName, DBManager dbManager, Parser parser, Condition condition) : base(tableName, dbManager, parser)
+        {
+            this.condition = condition;
+        }
         public override int Execute()
         {
-            throw new NotImplementedException();
+            return dbManager.Delete(parser.ParseDeleteQuery(tableName, condition.toSQL()));
         }
     }
 }
