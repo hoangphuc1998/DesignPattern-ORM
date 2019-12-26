@@ -9,13 +9,13 @@ namespace DesignPattern_ORM
         private Dictionary<string, Object> updateValues = new Dictionary<string, Object>();
         private Disjunction condition = new Disjunction();
 
-        public UpdateQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, Object> updateValues, Condition condition)
-            :base(tableName, dbManager, parser)
+        public UpdateQuery(string tableName, DBManager dbManager, Parser parser,Dictionary<string, string> featureMap, Dictionary<string, Object> updateValues, Condition condition)
+            :base(tableName, dbManager, parser, featureMap)
         {
             this.updateValues = updateValues;
             this.condition.Add(condition);
         }
-        public UpdateQuery(string tableName, DBManager dbManager, Parser parser) : base(tableName, dbManager, parser) { }
+        public UpdateQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, string> featureMap) : base(tableName, dbManager, parser, featureMap) { }
         public UpdateQuery Where(Condition condition)
         {
             this.condition.Add(condition);
@@ -32,7 +32,7 @@ namespace DesignPattern_ORM
             {
                 throw new Exception("There is nothing to update");
             }
-            string conditionStr = condition.toSQL();
+            string conditionStr = condition.toSQL(featureMap);
             if (conditionStr.Length == 0)
             {
                 throw new Exception("Update condition is not specified");

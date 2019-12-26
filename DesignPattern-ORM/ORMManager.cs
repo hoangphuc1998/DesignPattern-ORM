@@ -57,7 +57,7 @@ namespace DesignPattern_ORM
                     valueMap.Add(attr, value);
                 }
             }
-            return new InsertQuery(tableName, dbManager, parser, valueMap);
+            return new InsertQuery(tableName, dbManager, parser, featureMap, valueMap);
         }
 
         public DeleteQuery Delete(T obj)
@@ -72,16 +72,16 @@ namespace DesignPattern_ORM
                     condition.Add(Condition.Equal(attr, value));
                 }
             }
-            return new DeleteQuery(tableName, dbManager, parser, condition);
+            return new DeleteQuery(tableName, dbManager, parser,featureMap, condition);
         }
 
         public DeleteQuery Delete(Condition condition)
         {
-            return new DeleteQuery(tableName, dbManager, parser, condition);
+            return new DeleteQuery(tableName, dbManager, parser,featureMap, condition);
         }
         public DeleteQuery Delete()
         {
-            return new DeleteQuery(tableName, dbManager, parser);
+            return new DeleteQuery(tableName, dbManager, parser, featureMap);
         }
         
         public UpdateQuery Update(T obj)
@@ -89,7 +89,7 @@ namespace DesignPattern_ORM
             Conjunction condition = new Conjunction();
             foreach (string key in primaryKeys)
             {
-                condition.Add(Condition.Equal(featureMap[key], GetValue(obj, key)));
+                condition.Add(Condition.Equal(key, GetValue(obj, key)));
             }
             Dictionary<string, Object> setValues = new Dictionary<string, object>();
             foreach (string feature in featureMap.Keys)
@@ -98,13 +98,13 @@ namespace DesignPattern_ORM
                 {
                     continue;
                 }
-                setValues.Add(featureMap[feature], GetValue(obj, feature));
+                setValues.Add(feature, GetValue(obj, feature));
             }
-            return new UpdateQuery(tableName, dbManager, parser, setValues, condition);
+            return new UpdateQuery(tableName, dbManager, parser,featureMap, setValues, condition);
         }
         public UpdateQuery Update()
         {
-            return new UpdateQuery(tableName, dbManager, parser);
+            return new UpdateQuery(tableName, dbManager, parser, featureMap);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace DesignPattern_ORM
     abstract class Condition
     {
         // protected bool isNot = false;
-        public abstract string toSQL();
+        public abstract string toSQL(Dictionary<string, string> featureMap);
         /**
          USAGE
         
