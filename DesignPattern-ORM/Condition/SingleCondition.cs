@@ -6,13 +6,28 @@ namespace DesignPattern_ORM
 {
     abstract class SingleCondition:Condition
     {
-        protected Condition leftCondition;
-        protected Condition rightCondition;
+        protected List<Condition> conditions;
 
         public abstract string getLogic();
-        public override string toSQL()
+        public override string toSQL(Dictionary<string, string> featureMap, string aggFunc = "")
         {
-            return "( " + leftCondition.toSQL() + " " + getLogic() + " " + rightCondition.toSQL() + " )";
+            string opt = getLogic();
+            if (conditions.Count == 0)
+            {
+                return "";
+            }
+            string res = conditions[0].toSQL(featureMap);
+            for (int i = 1; i<conditions.Count; i++)
+            {
+                res += " " + opt + " " + conditions[i].toSQL(featureMap);
+            }
+            res = "(" + res + ")";
+            return res;
+        }
+        public Condition Add(Condition condition)
+        {
+            this.conditions.Add(condition);
+            return this;
         }
     }
 }

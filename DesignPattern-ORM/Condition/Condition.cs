@@ -7,25 +7,33 @@ namespace DesignPattern_ORM
     abstract class Condition
     {
         // protected bool isNot = false;
-        public abstract string toSQL();
+        public abstract string toSQL(Dictionary<string, string> featureMap);
         /**
          USAGE
         
          * */
-         public static Condition And(Condition a, Condition b)
+         public static Conjunction And(Condition a, Condition b)
         {
-            return new And(a, b);
+            return new Conjunction(a, b);
         }
-        public static Condition Or(Condition a, Condition b)
+        public static Disjunction Or(Condition a, Condition b)
         {
-            return new Or(a, b);
+            return new Disjunction(a, b);
         }
-        public static Condition lt(string a, Object b)
+        public static Conjunction Conjunction()
+        {
+            return new Conjunction();
+        }
+        public static Disjunction Disjunction()
+        {
+            return new Disjunction();
+        }
+        public static LessThan LessThan(string a, Object b)
         {
             return new LessThan(a, b);
         }
 
-        public static Condition equal(string a, Object b)
+        public static Equal Equal(string a, Object b)
         {
             return new Equal(a, b);
         }

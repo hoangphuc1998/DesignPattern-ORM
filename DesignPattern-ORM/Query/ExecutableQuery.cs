@@ -8,11 +8,13 @@ namespace DesignPattern_ORM
         protected string tableName;
         protected DBManager dbManager;
         protected Parser parser;
-        protected ExecutableQuery(string tableName, DBManager dbManager, Parser parser)
+        protected Dictionary<string, string> featureMap;
+        protected ExecutableQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, string> featureMap)
         {
             this.tableName = tableName;
             this.dbManager = dbManager;
             this.parser = parser;
+            this.featureMap = featureMap;
         }
         public abstract int Execute();
     }

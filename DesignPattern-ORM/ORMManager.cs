@@ -1,4 +1,4 @@
-﻿using DesignPattern_ORM.Attribute;
+﻿using DesignPattern_ORM;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,15 +50,61 @@ namespace DesignPattern_ORM
                 //Check if attribute is a list or dictionary
                 if (!(value is ICollection) && !(obj is ICollection))
                 {
-                    if (autoincrementCols.Any(attr.Contains))
+                    if (autoincrementCols.Contains(attr))
                     {
                         continue;
                     }
                     valueMap.Add(attr, value);
                 }
             }
-            return new InsertQuery(tableName, dbManager, parser, valueMap);
+            return new InsertQuery(tableName, dbManager, parser, featureMap, valueMap);
         }
 
+        public DeleteQuery Delete(T obj)
+        {
+            Conjunction condition = new Conjunction();
+            foreach(string attr in featureMap.Keys)
+            {
+                Object value = GetValue(obj, attr);
+                //Check if attribute is a list or dictionary
+                if (!(value is ICollection) && !(obj is ICollection))
+                {
+                    condition.Add(Condition.Equal(attr, value));
+                }
+            }
+            return new DeleteQuery(tableName, dbManager, parser,featureMap, condition);
+        }
+
+        public DeleteQuery Delete(Condition condition)
+        {
+            return new DeleteQuery(tableName, dbManager, parser,featureMap, condition);
+        }
+        public DeleteQuery Delete()
+        {
+            return new DeleteQuery(tableName, dbManager, parser, featureMap);
+        }
+        
+        public UpdateQuery Update(T obj)
+        {
+            Conjunction condition = new Conjunction();
+            foreach (string key in primaryKeys)
+            {
+                condition.Add(Condition.Equal(key, GetValue(obj, key)));
+            }
+            Dictionary<string, Object> setValues = new Dictionary<string, object>();
+            foreach (string feature in featureMap.Keys)
+            {
+                if (primaryKeys.Contains(feature))
+                {
+                    continue;
+                }
+                setValues.Add(feature, GetValue(obj, feature));
+            }
+            return new UpdateQuery(tableName, dbManager, parser,featureMap, setValues, condition);
+        }
+        public UpdateQuery Update()
+        {
+            return new UpdateQuery(tableName, dbManager, parser, featureMap);
+        }
     }
 }
