@@ -20,13 +20,18 @@ namespace DesignPattern_ORM
             }
             return obj.ToString();
         }
-        public override string toSQL(Dictionary<string, string> featureMap)
+        public override string toSQL(Dictionary<string, string> featureMap, string aggFunc = "")
         {
             if (featureMap.ContainsKey(param) == false)
             {
                 throw new Exception("There is no \"" + param + "\" attribute in class");
             }
-            return featureMap[param] + getRestrictionOperator() + parseValue(value);
+            string attr = featureMap[param];
+            if (aggFunc.Length != 0)
+            {
+                attr = aggFunc + "(" + attr + ")";
+            }
+            return attr + getRestrictionOperator() + parseValue(value);
         }
     }
 }

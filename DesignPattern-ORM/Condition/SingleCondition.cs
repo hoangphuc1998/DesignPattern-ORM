@@ -9,7 +9,7 @@ namespace DesignPattern_ORM
         protected List<Condition> conditions;
 
         public abstract string getLogic();
-        public override string toSQL(Dictionary<string, string> featureMap)
+        public override string toSQL(Dictionary<string, string> featureMap, string aggFunc = "")
         {
             string opt = getLogic();
             if (conditions.Count == 0)

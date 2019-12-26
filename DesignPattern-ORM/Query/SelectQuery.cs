@@ -6,19 +6,21 @@ namespace DesignPattern_ORM
 {
     class SelectQuery<T>
     {
-        private string tableName;
-        private DBManager dbManager;
-        private Parser parser;
-        private List<string> projections;
-        private List<string> orderBy;
-        private Disjunction condition;
-        public SelectQuery(string tableName, DBManager dbManager, Parser parser) 
+        protected string tableName;
+        protected DBManager dbManager;
+        protected Parser parser;
+        protected List<string> projections;
+        protected List<string> orderBy;
+        protected Dictionary<string, string> featureMap;
+        protected Disjunction condition;
+        public SelectQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, string> featureMap) 
         {
             this.tableName = tableName;
             this.dbManager = dbManager;
             this.parser = parser;
             this.projections = new List<string>();
             this.condition = new Disjunction();
+            this.featureMap = featureMap;
         }
         public SelectQuery<T> Where(Condition condition)
         {
@@ -27,7 +29,6 @@ namespace DesignPattern_ORM
         }
         public List<Object> ToList()
         {
-
             throw new NotImplementedException();
         }
     }
