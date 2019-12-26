@@ -36,5 +36,16 @@ namespace DesignPattern_ORM
             DOB = dOB;
             this.classID = classID;
         }
+        public Student(int ID, string name, bool isMale, string email, string phoneNumber, string address, DateTime dOB, int classID)
+        {
+            this.Id = ID;
+            this.name = name;
+            this.isMale = isMale;
+            this.email = email;
+            this.phoneNumber = phoneNumber;
+            this.address = address;
+            DOB = dOB;
+            this.classID = classID;
+        }
     }
 }

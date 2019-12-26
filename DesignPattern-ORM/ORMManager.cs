@@ -50,7 +50,7 @@ namespace DesignPattern_ORM
                 //Check if attribute is a list or dictionary
                 if (!(value is ICollection) && !(obj is ICollection))
                 {
-                    if (autoincrementCols.Any(attr.Contains))
+                    if (autoincrementCols.Contains(attr))
                     {
                         continue;
                     }
@@ -79,6 +79,32 @@ namespace DesignPattern_ORM
         {
             return new DeleteQuery(tableName, dbManager, parser, condition);
         }
+        public DeleteQuery Delete()
+        {
+            return new DeleteQuery(tableName, dbManager, parser);
+        }
         
+        public UpdateQuery Update(T obj)
+        {
+            Conjunction condition = new Conjunction();
+            foreach (string key in primaryKeys)
+            {
+                condition.Add(Condition.Equal(featureMap[key], GetValue(obj, key)));
+            }
+            Dictionary<string, Object> setValues = new Dictionary<string, object>();
+            foreach (string feature in featureMap.Keys)
+            {
+                if (primaryKeys.Contains(feature))
+                {
+                    continue;
+                }
+                setValues.Add(featureMap[feature], GetValue(obj, feature));
+            }
+            return new UpdateQuery(tableName, dbManager, parser, setValues, condition);
+        }
+        public UpdateQuery Update()
+        {
+            return new UpdateQuery(tableName, dbManager, parser);
+        }
     }
 }

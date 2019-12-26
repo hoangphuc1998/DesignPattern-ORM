@@ -5,14 +5,17 @@ namespace DesignPattern_ORM
 {
     class Program
     {
-        static void Main2(string[] args)
+        static void Main(string[] args)
         {
             MySQLManager sql = new MySQLManager("localhost", 3306, "school", "root", "palo1234");
             MySQLParser parser = new MySQLParser();
             ORMManager<Student> orm = new ORMManager<Student>(sql, parser);
 
-            Student student = new Student("Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
-            Console.WriteLine(student.Id);
+            Student student = new Student(502,"Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
+            //int numCol = orm.Insert(student).Execute();
+            //Console.WriteLine("Number of effected cols: " + numCol);
+            int numCol = orm.Update(student).Execute();
+            Console.WriteLine("Number of effected cols: " + numCol);
             //List<List<string>> s = sql.Select("SELECT * FROM Students");
             //foreach (List<string> ss in s)
             //{
@@ -22,11 +25,6 @@ namespace DesignPattern_ORM
             //    }
             //    Console.WriteLine();
             //}
-        }
-        static void Main(string[] args)
-        {
-            Condition x = Condition.And(Condition.LessThan("x", 5), Condition.Equal("L", "Asca"));
-            Console.WriteLine(x.toSQL());
         }
     }
 }

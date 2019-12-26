@@ -6,14 +6,25 @@ namespace DesignPattern_ORM
 {
     class DeleteQuery : ExecutableQuery
     {
-        Condition condition;
+        Disjunction condition = new Disjunction();
         public DeleteQuery(string tableName, DBManager dbManager, Parser parser, Condition condition) : base(tableName, dbManager, parser)
         {
-            this.condition = condition;
+            this.condition.Add(condition);
+        }
+        public DeleteQuery(string tableName, DBManager dbManager, Parser parser) : base(tableName, dbManager, parser) { }
+        public DeleteQuery Where(Condition condition)
+        {
+            this.condition.Add(condition);
+            return this;
         }
         public override int Execute()
         {
-            return dbManager.Delete(parser.ParseDeleteQuery(tableName, condition.toSQL()));
+            string conditionStr = condition.toSQL();
+            if (conditionStr.Length == 0)
+            {
+                throw new Exception("Delete condition is not specified");
+            }
+            return dbManager.Delete(parser.ParseDeleteQuery(tableName, conditionStr));
         }
     }
 }
