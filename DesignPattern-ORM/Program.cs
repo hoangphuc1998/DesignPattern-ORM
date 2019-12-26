@@ -25,7 +25,7 @@ namespace DesignPattern_ORM
         }
         static void Main(string[] args)
         {
-            Condition x = Condition.And(Condition.lt("x", 5), Condition.equal("L", "Asca"));
+            Condition x = Condition.And(Condition.LessThan("x", 5), Condition.Equal("L", "Asca"));
             Console.WriteLine(x.toSQL());
         }
     }

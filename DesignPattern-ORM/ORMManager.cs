@@ -62,7 +62,7 @@ namespace DesignPattern_ORM
 
         public DeleteQuery Delete(T obj)
         {
-            Condition condition = Condition.Disjunction();
+            Conjunction condition = new Conjunction();
             foreach(string attr in featureMap.Keys)
             {
                 Object value = GetValue(obj, attr);
