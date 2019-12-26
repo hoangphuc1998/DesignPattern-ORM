@@ -31,7 +31,11 @@ namespace DesignPattern_ORM {
 
         public override string ParseSelectQuery(string tableName, string projections, string whereCondition, string groupByCondition = "", string havingCondition = "", string orderBy = "")
         {
-            string query = "SELECT " + projections + " FROM " + tableName + " WHERE " + whereCondition;
+            string query = "SELECT " + projections + " FROM " + tableName;
+            if (whereCondition.Length != 0)
+            {
+                query += " WHERE " + whereCondition;
+            }
             if (groupByCondition.Length != 0) {
                 query += " GROUP BY " + groupByCondition;
                 if (havingCondition.Length != 0)

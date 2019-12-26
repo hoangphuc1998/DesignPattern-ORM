@@ -47,5 +47,6 @@ namespace DesignPattern_ORM
             DOB = dOB;
             this.classID = classID;
         }
+        public Student() { }
     }
 }

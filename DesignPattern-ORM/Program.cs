@@ -10,12 +10,13 @@ namespace DesignPattern_ORM
             MySQLManager sql = new MySQLManager("localhost", 3306, "school", "root", "palo1234");
             MySQLParser parser = new MySQLParser();
             ORMManager<Student> orm = new ORMManager<Student>(sql, parser);
-
-            Student student = new Student(502,"Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
+            List<Object> res = orm.Select().ToList();
+            Console.WriteLine(((Student)res[300]).DOB);
+            //Student student = new Student(502,"Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
             //int numCol = orm.Insert(student).Execute();
             //Console.WriteLine("Number of effected cols: " + numCol);
-            int numCol = orm.Update(student).Execute();
-            Console.WriteLine("Number of effected cols: " + numCol);
+            //int numCol = orm.Update(student).Execute();
+            //Console.WriteLine("Number of effected cols: " + numCol);
             //List<List<string>> s = sql.Select("SELECT * FROM Students");
             //foreach (List<string> ss in s)
             //{

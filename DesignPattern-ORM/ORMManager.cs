@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    class ORMManager<T>
+    class ORMManager<T> where T: new()
     {
         Object GetValue(Object src, string propName){
             return src.GetType().GetProperty(propName).GetValue(src, null);
@@ -105,6 +105,10 @@ namespace DesignPattern_ORM
         public UpdateQuery Update()
         {
             return new UpdateQuery(tableName, dbManager, parser, featureMap);
+        }
+        public SelectQuery<T> Select()
+        {
+            return new SelectQuery<T>(tableName, dbManager, parser, featureMap);
         }
     }
 }
