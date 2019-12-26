@@ -29,5 +29,6 @@ namespace DesignPattern_ORM
         {
             return new Equal(a, b);
         }
+        public 
     }
 }
