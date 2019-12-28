@@ -19,7 +19,7 @@ namespace DesignPattern_ORM
             foreach (KeyValuePair<string, Object> keyValuePair in values)
             {
                 string parsed = parser.ParseValue(keyValuePair.Value, keyValuePair.Value.GetType());
-                valuesMap.Add(keyValuePair.Key, parsed);
+                valuesMap.Add(this.featureMap[keyValuePair.Key], parsed);
             }
             return dbManager.Insert(this.parser.ParseInsertQuery(this.tableName, valuesMap));
         }

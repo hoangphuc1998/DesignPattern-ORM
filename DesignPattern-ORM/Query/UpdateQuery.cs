@@ -23,7 +23,7 @@ namespace DesignPattern_ORM
         }
         public UpdateQuery Set(string attr, Object value)
         {
-            this.updateValues.Add(attr, value);
+            this.updateValues.Add(this.featureMap[attr], value);
             return this;
         }
         public override int Execute()

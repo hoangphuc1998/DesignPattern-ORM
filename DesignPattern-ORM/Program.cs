@@ -11,16 +11,16 @@ namespace DesignPattern_ORM
             MySQLParser parser = new MySQLParser();
             ORMManager<Student> orm = new ORMManager<Student>(sql, parser);
             
-            List<Object> res = orm.Select().AddProjection("ten").GroupBy("lop").AddProjection("ten", Aggregate.COUNT, "demten")
-                .Having(Condition.Equal("ten",41,Aggregate.COUNT)).ToList();
-            foreach(string key in ((Dictionary<string, Object>)res[0]).Keys)
-            {
-                Console.WriteLine(key);
-            }
-            Console.WriteLine(((Dictionary<string, Object>)res[0])["ten"]);
+            //List<Object> res = orm.Select().AddProjection("ten").GroupBy("lop").AddProjection("ten", Aggregate.COUNT, "demten")
+            //    .Having(Condition.Equal("ten",41,Aggregate.COUNT)).ToList();
+            //foreach(string key in ((Dictionary<string, Object>)res[0]).Keys)
+            //{
+            //    Console.WriteLine(key);
+            //}
+            //Console.WriteLine(((Dictionary<string, Object>)res[0])["ten"]);
             
-            //Student student = new Student(502,"Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
-            //int numCol = orm.Insert(student).Execute();
+            Student student = new Student("Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
+            int numCol = orm.Insert(student).Execute();
             //Console.WriteLine("Number of effected cols: " + numCol);
             //int numCol = orm.Update(student).Execute();
             //Console.WriteLine("Number of effected cols: " + numCol);
