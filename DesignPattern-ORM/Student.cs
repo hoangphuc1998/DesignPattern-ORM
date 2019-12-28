@@ -12,41 +12,43 @@ namespace DesignPattern_ORM
         [Column("ID", isKey: true, autoincrement: true)]
         public int Id { get; set; }
         [Column("Name")]
-        public string name { get; set; }
+        public string ten { get; set; }
         [Column("IsMale")]
-        public bool isMale {get;set;}
+        public bool gioiTinh {get;set;}
         [Column("Email")]
-        public string email {get; set;}
+        public string mail {get; set;}
         [Column("PhoneNumber")]
-        public string phoneNumber {get;set;}
+        public string sdt {get;set;}
         [Column("Address")]
-        public string address {get; set;}
+        public string diaChi {get; set;}
         [Column("DOB")]
-        public DateTime DOB {get;set;}
+        public DateTime ngaySinh {get;set;}
         [Column("ClassID")]
-        public int classID {get;set;}
+        public int lop {get;set;}
 
-        public Student(string name, bool isMale, string email, string phoneNumber, string address, DateTime dOB, int classID)
+        public Student(int id, string ten, bool gioiTinh, string mail, string sdt, string diaChi, DateTime ngaySinh, int lop)
         {
-            this.name = name;
-            this.isMale = isMale;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
-            this.address = address;
-            DOB = dOB;
-            this.classID = classID;
+            Id = id;
+            this.ten = ten;
+            this.gioiTinh = gioiTinh;
+            this.mail = mail;
+            this.sdt = sdt;
+            this.diaChi = diaChi;
+            this.ngaySinh = ngaySinh;
+            this.lop = lop;
         }
-        public Student(int ID, string name, bool isMale, string email, string phoneNumber, string address, DateTime dOB, int classID)
+
+        public Student(string ten, bool gioiTinh, string mail, string sdt, string diaChi, DateTime ngaySinh, int lop)
         {
-            this.Id = ID;
-            this.name = name;
-            this.isMale = isMale;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
-            this.address = address;
-            DOB = dOB;
-            this.classID = classID;
+            this.ten = ten;
+            this.gioiTinh = gioiTinh;
+            this.mail = mail;
+            this.sdt = sdt;
+            this.diaChi = diaChi;
+            this.ngaySinh = ngaySinh;
+            this.lop = lop;
         }
+
         public Student() { }
     }
 }

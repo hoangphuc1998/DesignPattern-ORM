@@ -47,6 +47,7 @@ namespace DesignPattern_ORM {
             {
                 query += " ORDER BY " + orderBy;
             }
+            Console.WriteLine(query);
             return query;
         }
 

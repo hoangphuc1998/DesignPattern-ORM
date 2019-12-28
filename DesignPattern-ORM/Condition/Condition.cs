@@ -7,7 +7,7 @@ namespace DesignPattern_ORM
     abstract class Condition
     {
         // protected bool isNot = false;
-        public abstract string toSQL(Dictionary<string, string> featureMap, string aggFunc = "");
+        public abstract string toSQL(Dictionary<string, string> featureMap);
         /**
          USAGE
         
@@ -28,14 +28,14 @@ namespace DesignPattern_ORM
         {
             return new Disjunction();
         }
-        public static LessThan LessThan(string a, Object b)
+        public static LessThan LessThan(string a, Object b, string aggFunc = "")
         {
-            return new LessThan(a, b);
+            return new LessThan(a, b, aggFunc);
         }
 
-        public static Equal Equal(string a, Object b)
+        public static Equal Equal(string a, Object b, string aggFunc = "")
         {
-            return new Equal(a, b);
+            return new Equal(a, b, aggFunc);
         }
     }
 }

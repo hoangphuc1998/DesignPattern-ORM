@@ -8,6 +8,7 @@ namespace DesignPattern_ORM
     {   
         protected string param { get; set; }
         protected Object value { get; set; }
+        protected string aggFunc { get; set; }
         public abstract string getRestrictionOperator();
         public string parseValue(Object obj)
         {
@@ -20,7 +21,7 @@ namespace DesignPattern_ORM
             }
             return obj.ToString();
         }
-        public override string toSQL(Dictionary<string, string> featureMap, string aggFunc = "")
+        public override string toSQL(Dictionary<string, string> featureMap)
         {
             if (featureMap.ContainsKey(param) == false)
             {

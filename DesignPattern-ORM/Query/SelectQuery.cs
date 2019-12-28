@@ -9,13 +9,13 @@ namespace DesignPattern_ORM
     {
         public int ASC = 0;
         public int DESC = 1;
-        protected string tableName;
-        protected DBManager dbManager;
-        protected Parser parser;
-        protected Dictionary<string, string> projections;
+        public string tableName;
+        public DBManager dbManager;
+        public Parser parser;
+        public Dictionary<string, string> projections;
+        public Dictionary<string, string> aliasMap;
         protected Dictionary<string, int> orderBy;
-        protected Dictionary<string, string> featureMap;
-        protected Dictionary<string, string> colMap;
+        public Dictionary<string, string> featureMap;
         protected Disjunction condition;
         public SelectQuery() { }
         public SelectQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, string> featureMap) 
@@ -27,11 +27,7 @@ namespace DesignPattern_ORM
             this.condition = new Disjunction();
             this.featureMap = featureMap;
             this.orderBy = new Dictionary<string, int>();
-            colMap = new Dictionary<string, string>();
-            foreach(string attr in featureMap.Keys)
-            {
-                colMap.Add(featureMap[attr], attr);
-            }
+            aliasMap = new Dictionary<string, string>();
         }
         public SelectQuery<T> Where(Condition condition)
         {
@@ -44,22 +40,27 @@ namespace DesignPattern_ORM
             {
                 alias = attr;
             }
-            this.projections.Add(attr, alias);
+            this.projections.Add(featureMap[attr], alias);
+            this.aliasMap.Add(alias, attr);
             return this;
+        }
+        public GroupByQuery<T> GroupBy(string attr)
+        {
+            return new GroupByQuery<T>(this).GroupBy(attr);
         }
         public SelectQuery<T> OrderBy(string attr, string order = "ASC")
         {
             if (order.Equals("DECS"))
             {
-                this.orderBy.Add(attr, DESC);
+                this.orderBy.Add(featureMap[attr], DESC);
             }
             else
             {
-                this.orderBy.Add(attr, ASC);
+                this.orderBy.Add(featureMap[attr], ASC);
             }
             return this;
         }
-        protected virtual string GetProjectionStr()
+        public virtual string GetProjectionStr()
         {
             string select = "";
             if (projections.Count == 0)
@@ -70,24 +71,24 @@ namespace DesignPattern_ORM
             {
                 foreach (string projection in projections.Keys)
                 {
-                    select += featureMap[projection] + " AS " + projections[projection] + ",";
+                    select += projection + " AS " + projections[projection] + ",";
                 }
                 select = select.Remove(select.Length - 1, 1);
             }
             return select;
         }
-        protected virtual string GetConditionStr()
+        public virtual string GetConditionStr()
         {
             return condition.toSQL(featureMap);
         }
-        protected virtual string GetOrderStr()
+        public virtual string GetOrderStr()
         {
             string order = "";
             if (orderBy.Count != 0)
             {
                 foreach (string attr in orderBy.Keys)
                 {
-                    order += featureMap[attr];
+                    order += attr;
                     if (orderBy[attr] == DESC)
                     {
                         order += " DESC, ";
@@ -101,11 +102,11 @@ namespace DesignPattern_ORM
             }
             return order;
         }
-        protected virtual string GetGroupByStr()
+        public virtual string GetGroupByStr()
         {
             return "";
         }
-        protected virtual string GetHavingStr()
+        public virtual string GetHavingStr()
         {
             return "";
         }
@@ -120,8 +121,15 @@ namespace DesignPattern_ORM
             List<List<string>> res = dbManager.Select(parser.ParseSelectQuery(tableName, selectStr, conditionStr, groupByStr, havingStr, orderStr));
             return ParseResult(res);
         }
-        protected List<Object> ParseResult(List<List<string>> values)
+        public virtual List<Object> ParseResult(List<List<string>> values)
         {
+            if (projections.Count == 0)
+            {
+                foreach(string key in featureMap.Keys)
+                {
+                    aliasMap.Add(featureMap[key], key);
+                }
+            }
             List<Object> res = new List<Object>();
             Dictionary<int, string> colIndex = new Dictionary<int, string>();
             Type type = typeof(T);
@@ -138,7 +146,7 @@ namespace DesignPattern_ORM
                     
                     for (int j = 0; j < values[i].Count; j++)
                     {
-                        PropertyInfo propInfo = type.GetProperty(colMap[colIndex[j]]);
+                        PropertyInfo propInfo = type.GetProperty(aliasMap[colIndex[j]]);
                         Object convertObj = Convert.ChangeType(values[i][j], propInfo.PropertyType);
                         propInfo.SetValue(obj, convertObj);
                     }
@@ -148,10 +156,10 @@ namespace DesignPattern_ORM
                     obj = new Dictionary<string, Object>();
                     for (int j = 0; j < values[i].Count; j++)
                     {
-                        string propName = colMap[colIndex[j]];
+                        string propName = aliasMap[colIndex[j]];
                         PropertyInfo propInfo = type.GetProperty(propName);
                         Object convertObj = Convert.ChangeType(values[i][j], propInfo.PropertyType);
-                        ((Dictionary<string, Object>)obj).Add(propName, convertObj);
+                        ((Dictionary<string, Object>)obj).Add(colIndex[j], convertObj);
                     }
                 }
                 res.Add(obj);
