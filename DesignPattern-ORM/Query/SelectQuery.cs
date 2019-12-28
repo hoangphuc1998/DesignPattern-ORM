@@ -7,23 +7,26 @@ namespace DesignPattern_ORM
 {
     class SelectQuery<T> where T:new()
     {
+        public int ASC = 0;
+        public int DESC = 1;
         protected string tableName;
         protected DBManager dbManager;
         protected Parser parser;
-        protected List<string> projections;
-        protected List<string> orderBy;
+        protected Dictionary<string, string> projections;
+        protected Dictionary<string, int> orderBy;
         protected Dictionary<string, string> featureMap;
         protected Dictionary<string, string> colMap;
         protected Disjunction condition;
+        public SelectQuery() { }
         public SelectQuery(string tableName, DBManager dbManager, Parser parser, Dictionary<string, string> featureMap) 
         {
             this.tableName = tableName;
             this.dbManager = dbManager;
             this.parser = parser;
-            this.projections = new List<string>();
+            this.projections = new Dictionary<string, string>();
             this.condition = new Disjunction();
             this.featureMap = featureMap;
-            this.orderBy = new List<string>();
+            this.orderBy = new Dictionary<string, int>();
             colMap = new Dictionary<string, string>();
             foreach(string attr in featureMap.Keys)
             {
@@ -35,7 +38,28 @@ namespace DesignPattern_ORM
             this.condition.Add(condition);
             return this;
         }
-        public List<Object> ToList()
+        public SelectQuery<T> AddProjection(string attr, string alias = "")
+        {
+            if (alias.Length == 0)
+            {
+                alias = attr;
+            }
+            this.projections.Add(attr, alias);
+            return this;
+        }
+        public SelectQuery<T> OrderBy(string attr, string order = "ASC")
+        {
+            if (order.Equals("DECS"))
+            {
+                this.orderBy.Add(attr, DESC);
+            }
+            else
+            {
+                this.orderBy.Add(attr, ASC);
+            }
+            return this;
+        }
+        protected virtual string GetProjectionStr()
         {
             string select = "";
             if (projections.Count == 0)
@@ -44,29 +68,63 @@ namespace DesignPattern_ORM
             }
             else
             {
-                foreach (string projection in projections)
+                foreach (string projection in projections.Keys)
                 {
-                    select += featureMap[projection] + ",";
+                    select += featureMap[projection] + " AS " + projections[projection] + ",";
                 }
                 select = select.Remove(select.Length - 1, 1);
             }
-            string conditionStr = condition.toSQL(featureMap);
+            return select;
+        }
+        protected virtual string GetConditionStr()
+        {
+            return condition.toSQL(featureMap);
+        }
+        protected virtual string GetOrderStr()
+        {
             string order = "";
             if (orderBy.Count != 0)
             {
-                foreach (string attr in orderBy)
+                foreach (string attr in orderBy.Keys)
                 {
-                    order += featureMap[attr] + ",";
+                    order += featureMap[attr];
+                    if (orderBy[attr] == DESC)
+                    {
+                        order += " DESC, ";
+                    }
+                    else
+                    {
+                        order += " ASC, ";
+                    }
                 }
                 order = order.Remove(order.Length - 1, 1);
             }
-            List<List<string>> res = dbManager.Select(parser.ParseSelectQuery(tableName, select, conditionStr, orderBy:order));
+            return order;
+        }
+        protected virtual string GetGroupByStr()
+        {
+            return "";
+        }
+        protected virtual string GetHavingStr()
+        {
+            return "";
+        }
+        public List<Object> ToList()
+        {
+            string selectStr = GetProjectionStr();
+            string conditionStr = GetConditionStr();
+            string groupByStr = GetGroupByStr();
+            string orderStr = GetOrderStr();
+            string havingStr = GetHavingStr();
+
+            List<List<string>> res = dbManager.Select(parser.ParseSelectQuery(tableName, selectStr, conditionStr, groupByStr, havingStr, orderStr));
             return ParseResult(res);
         }
         protected List<Object> ParseResult(List<List<string>> values)
         {
             List<Object> res = new List<Object>();
             Dictionary<int, string> colIndex = new Dictionary<int, string>();
+            Type type = typeof(T);
             for (int i = 0; i< values[0].Count; i++)
             {
                 colIndex.Add(i, values[0][i]);
@@ -77,9 +135,9 @@ namespace DesignPattern_ORM
                 if (projections.Count == 0)
                 {
                     obj = new T();
+                    
                     for (int j = 0; j < values[i].Count; j++)
                     {
-                        Type type = typeof(T);
                         PropertyInfo propInfo = type.GetProperty(colMap[colIndex[j]]);
                         Object convertObj = Convert.ChangeType(values[i][j], propInfo.PropertyType);
                         propInfo.SetValue(obj, convertObj);
@@ -87,7 +145,14 @@ namespace DesignPattern_ORM
                 }
                 else
                 {
-                    //TODO: add parse for Dictionary
+                    obj = new Dictionary<string, Object>();
+                    for (int j = 0; j < values[i].Count; j++)
+                    {
+                        string propName = colMap[colIndex[j]];
+                        PropertyInfo propInfo = type.GetProperty(propName);
+                        Object convertObj = Convert.ChangeType(values[i][j], propInfo.PropertyType);
+                        ((Dictionary<string, Object>)obj).Add(propName, convertObj);
+                    }
                 }
                 res.Add(obj);
             }
