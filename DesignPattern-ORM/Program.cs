@@ -7,9 +7,10 @@ namespace DesignPattern_ORM
     {
         static void Main(string[] args)
         {
-            MySQLManager sql = new MySQLManager("localhost", 3306, "school", "root", "palo1234");
-            MySQLParser parser = new MySQLParser();
-            ORMManager<Student> orm = new ORMManager<Student>(sql, parser);
+            DBFactory factory = new MySQLFactory();
+            DBManager dbManager = factory.CreateDBManager("localhost", 3306, "school", "root", "palo1234");
+            Parser parser = factory.CreateParser();
+            ORMManager<Student> orm = new ORMManager<Student>(dbManager, parser);
             
             //List<Object> res = orm.Select().AddProjection("ten").GroupBy("lop").AddProjection("ten", Aggregate.COUNT, "demten")
             //    .Having(Condition.Equal("ten",41,Aggregate.COUNT)).ToList();
