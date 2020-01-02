@@ -37,5 +37,25 @@ namespace DesignPattern_ORM
         {
             return new Equal(a, b, aggFunc);
         }
+        public static GreaterThan GreaterThan(string a, Object b, string aggFunc = "")
+        {
+            return new GreaterThan(a, b, aggFunc);
+        }
+        public static GreaterThanOrEqual GreaterThanOrEqual(string a, Object b, string aggFunc = "")
+        {
+            return new GreaterThanOrEqual(a, b, aggFunc);
+        }
+        public static LessThanOrEqual LessThanOrEqual(string a, Object b, string aggFunc = "")
+        {
+            return new LessThanOrEqual(a, b, aggFunc);
+        }
+        public static Like Like(string a, Object b, string aggFunc = "")
+        {
+            return new Like(a, b, aggFunc);
+        }
+        public static Not Not(Condition condition)
+        {
+            return new Not(condition);
+        }
     }
 }

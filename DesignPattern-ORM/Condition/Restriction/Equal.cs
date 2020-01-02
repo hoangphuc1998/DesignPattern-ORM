@@ -6,11 +6,9 @@ namespace DesignPattern_ORM
 {
     class Equal : Restriction
     {
-        public Equal(string a, Object b, string aggFunc = "")
+        public Equal(string a, Object b, string aggFunc = "") : base(a,b, aggFunc)
         {
-            param = a;
-            value = b;
-            this.aggFunc = aggFunc;
+       
         }
         public override string getRestrictionOperator()
         {

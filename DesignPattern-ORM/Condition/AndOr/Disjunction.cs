@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    class Disjunction:SingleCondition
+    class Disjunction:Connector
     {
         public Disjunction(Condition left, Condition right)
         {

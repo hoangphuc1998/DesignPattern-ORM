@@ -4,14 +4,15 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    class LessThan : Restriction
+    class Like : Restriction
     {
-        public LessThan(string a, Object b, string aggFunc = "") : base(a,b,aggFunc) {
-            
+        public Like(string a, Object b, string aggFunc = "") : base(a, b, aggFunc)
+        {
+
         }
         public override string getRestrictionOperator()
         {
-            return "<";
+            return "LIKE";
         }
     }
 }

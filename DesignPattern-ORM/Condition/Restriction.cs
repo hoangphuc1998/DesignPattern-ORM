@@ -10,6 +10,12 @@ namespace DesignPattern_ORM
         protected Object value { get; set; }
         protected string aggFunc { get; set; }
         public abstract string getRestrictionOperator();
+        public Restriction(string param, Object value, string aggFunc)
+        {
+            this.param = param;
+            this.value = value;
+            this.aggFunc = aggFunc;
+        }
         public string parseValue(Object obj)
         {
             Type type = obj.GetType();

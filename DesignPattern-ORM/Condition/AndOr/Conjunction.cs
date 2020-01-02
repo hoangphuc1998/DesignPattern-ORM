@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    class Conjunction:SingleCondition
+    class Conjunction:Connector
     {
         public Conjunction(Condition left, Condition right)
         {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DesignPattern_ORM
 {
-    abstract class SingleCondition:Condition
+    abstract class Connector:Condition
     {
         protected List<Condition> conditions;
 
