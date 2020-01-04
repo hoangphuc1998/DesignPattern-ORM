@@ -15,5 +15,13 @@ namespace DesignPattern_ORM
 
         [HasMany("Student", "Id", "classid")]
         public List<Student> x { get; set; }
+
+        public Class(int id, string tenlop)
+        {
+            Id = id;
+            tenLop = tenlop;
+        }
+
+        public Class() { }
     }
 }

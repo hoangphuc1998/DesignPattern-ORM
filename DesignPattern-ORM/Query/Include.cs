@@ -113,7 +113,7 @@ namespace DesignPattern_ORM
             string conditionStr = wrappee.GetConditionStr();
             string orderStr = wrappee.GetOrderStr();
 
-            string join = string.Format("{0} join {1} on {0}.{2} = {1}.{3}", wrappee.tableName, otherTable, insideKey, forgeinKey);
+            string join = string.Format("{0} left join {1} on {0}.{2} = {1}.{3}", wrappee.tableName, otherTable, insideKey, forgeinKey);
             string[] header = selectStr.Split(',');
 
             //foreach (string s in selectStr.Split(',')) Console.WriteLine(s);

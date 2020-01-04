@@ -47,7 +47,7 @@ namespace DesignPattern_ORM {
             {
                 query += " ORDER BY " + orderBy;
             }
-            Console.WriteLine(query);
+            //Console.WriteLine(query);
             return query;
         }
 
@@ -59,7 +59,7 @@ namespace DesignPattern_ORM {
                 query += key + "=" + setValues[key] + ",";
             }
             query = query.Remove(query.Length - 1, 1) + " WHERE " + whereCondtion;
-            Console.WriteLine(query);
+            //Console.WriteLine(query);
             return query;
         }
 
