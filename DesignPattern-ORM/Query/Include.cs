@@ -19,7 +19,7 @@ namespace DesignPattern_ORM
         private Dictionary<string, string> featureMap = new Dictionary<string, string>();
         public Include(SelectQuery<T> w, Type included, string[] projection)
             {
-            int matchProjection = projection.Length;
+            int matchProjection = (projection != null) ? projection.Length : 0;
             HasMany pInfo = getIncluded(included.ToString());
             if (pInfo != null)
             {
@@ -37,7 +37,7 @@ namespace DesignPattern_ORM
                     };
                     featureMap.Add(pInfoIncluded.Name, pInfoIncluded.GetCustomAttribute<Column>().columnName.ToLower());
                     aliasMap.Add(pInfoIncluded.GetCustomAttribute<Column>().columnName.ToLower(), pInfoIncluded.Name);
-                    if (isValid(pInfoIncluded.Name, projection)) matchProjection--;
+                    if (projection != null && isValid(pInfoIncluded.Name, projection)) matchProjection--;
                 }
                 if (matchProjection != 0)
                 {
@@ -52,6 +52,7 @@ namespace DesignPattern_ORM
             }
 
         }
+
         private bool isValid(string attr, string[] lst)
         {
             for (int i = 0; i < lst.Length; i++)
@@ -101,9 +102,17 @@ namespace DesignPattern_ORM
             
             ans += wrappee.GetProjectionStr();
             if (ans.Length > 0) ans += ",";
-            foreach(string attr in projection)
+            if (projection!=null)
+                foreach(string attr in projection)
+                {
+                    ans += otherTable + "." + featureMap[attr] + ",";
+                }
+            else
             {
-                ans += otherTable + "." + featureMap[attr] + ",";
+                foreach(string key in featureMap.Keys)
+                {
+                    ans += otherTable + "." + featureMap[key] + ",";
+                }
             }
             return ans.Substring(0, ans.Length - 1);
         }
@@ -119,7 +128,13 @@ namespace DesignPattern_ORM
             //foreach (string s in selectStr.Split(',')) Console.WriteLine(s);
             
             List<List<string>> v = wrappee.dbManager.Select(wrappee.parser.ParseSelectQuery(join, selectStr, conditionStr, "", "", orderStr));
-
+            /*
+            for (int i = 0; i < v.Count; i++)
+            {
+                for (int j = 0; j < v[i].Count; j++) Console.Write(v[i][j] + " ");
+                Console.WriteLine();
+            }
+            */
             List<List<string>> baseList = new List<List<String>>();
             int numColBase = 0;
             for (int i = 0; i < header.Length; i++)
@@ -163,7 +178,14 @@ namespace DesignPattern_ORM
                 for (int j = numColBase; j < v[i].Count; j++)
                 {
                     PropertyInfo propInfo = included.GetProperty(aliasMap[v[0][j]]);
-                    Object convertObj = Convert.ChangeType(v[i][j], propInfo.PropertyType);
+                    Object convertObj;
+                    if (v[i][j] != "") {
+                        convertObj = Convert.ChangeType(v[i][j], propInfo.PropertyType);
+                    } else
+                    {
+                        convertObj = null;
+                    }
+                        
                     propInfo.SetValue(x, convertObj);
                 }
                 list.Add(x);

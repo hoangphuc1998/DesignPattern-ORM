@@ -173,7 +173,7 @@ namespace DesignPattern_ORM
             return res;
         }
 
-        public Include<T> Include(Type type, string[] st)
+        public Include<T> Include(Type type, string[] st = null)
         {
             return new Include<T>(this, type, st);
         }

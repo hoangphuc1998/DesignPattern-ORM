@@ -50,7 +50,7 @@ namespace DesignPattern_ORM
 
         public override List<List<string>> Select(string query)
         {
-            Console.WriteLine(query);
+            //Console.WriteLine(query);
             NpgsqlCommand command = new NpgsqlCommand(query, conn);
             NpgsqlDataReader pgReader = command.ExecuteReader();
             List<List<string>> lst = new List<List<string>>();
