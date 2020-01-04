@@ -11,9 +11,9 @@ namespace DesignPattern_ORM
         {
             this.coreCondition = condition;
         }
-        public override string toSQL(Dictionary<string, string> featureMap)
+        public override string toSQL(Dictionary<string, string> featureMap, string tableName)
         {
-            return "(NOT " + coreCondition.toSQL(featureMap) + ")";
+            return "(NOT " + coreCondition.toSQL(featureMap, tableName) + ")";
         }
     }
 }

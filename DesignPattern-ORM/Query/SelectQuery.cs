@@ -65,13 +65,19 @@ namespace DesignPattern_ORM
             string select = "";
             if (projections.Count == 0)
             {
-                select = "*";
+                // select = "*";
+
+                foreach (string key in featureMap.Keys)
+                {
+                    select += tableName + "." + featureMap[key] + ",";
+                }
+                select = select.Substring(0, select.Length - 1);
             }
             else
             {
                 foreach (string projection in projections.Keys)
                 {
-                    select += projection + " AS " + projections[projection] + ",";
+                    select += tableName + "." + projection + " AS " + projections[projection] + ",";
                 }
                 select = select.Remove(select.Length - 1, 1);
             }
@@ -79,7 +85,7 @@ namespace DesignPattern_ORM
         }
         public virtual string GetConditionStr()
         {
-            return condition.toSQL(featureMap);
+            return condition.toSQL(featureMap, tableName);
         }
         public virtual string GetOrderStr()
         {
@@ -167,9 +173,9 @@ namespace DesignPattern_ORM
             return res;
         }
 
-        public Include<T> Include(Type type)
+        public Include<T> Include(Type type, string[] st)
         {
-            return new Include<T>(this, type);
+            return new Include<T>(this, type, st);
         }
     }
 }

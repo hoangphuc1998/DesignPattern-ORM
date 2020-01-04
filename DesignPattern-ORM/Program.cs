@@ -51,11 +51,17 @@ namespace DesignPattern_ORM
             }
             */
             ORMManager<Class> orm2 = new ORMManager<Class>(dBManager2, parser2);
-            List<Object> s = orm2.Select().Include(typeof(Student)).ToList();
+            List<Object> s = orm2.Select().Where(Condition.GreaterThan("Id", 2)).Include(typeof(Student), new string[] { "ten", "sdt" }).ToList();
             foreach (Object x in s)
             {
                 Class c = (Class)x;
                 Console.WriteLine(c.Id + " " + c.tenLop);
+                foreach(Object xx in c.x)
+                {
+                    Student cc = (Student)xx;
+                    Console.WriteLine(cc.ten);
+                }
+                Console.WriteLine("-----------------------");
             }
             dBManager2.Disconnect();
         }

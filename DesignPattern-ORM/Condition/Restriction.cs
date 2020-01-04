@@ -27,7 +27,7 @@ namespace DesignPattern_ORM
             }
             return obj.ToString();
         }
-        public override string toSQL(Dictionary<string, string> featureMap)
+        public override string toSQL(Dictionary<string, string> featureMap, string tableName)
         {
             if (featureMap.ContainsKey(param) == false)
             {
@@ -38,7 +38,7 @@ namespace DesignPattern_ORM
             {
                 attr = aggFunc + "(" + attr + ")";
             }
-            return attr + getRestrictionOperator() + parseValue(value);
+            return tableName + "." + attr + getRestrictionOperator() + parseValue(value);
         }
     }
 }

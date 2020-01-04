@@ -9,17 +9,17 @@ namespace DesignPattern_ORM
         protected List<Condition> conditions;
 
         public abstract string getLogic();
-        public override string toSQL(Dictionary<string, string> featureMap)
+        public override string toSQL(Dictionary<string, string> featureMap, string tableName)
         {
             string opt = getLogic();
             if (conditions.Count == 0)
             {
                 return "";
             }
-            string res = conditions[0].toSQL(featureMap);
+            string res = conditions[0].toSQL(featureMap, tableName);
             for (int i = 1; i<conditions.Count; i++)
             {
-                res += " " + opt + " " + conditions[i].toSQL(featureMap);
+                res += " " + opt + " " + conditions[i].toSQL(featureMap, tableName);
             }
             res = "(" + res + ")";
             return res;

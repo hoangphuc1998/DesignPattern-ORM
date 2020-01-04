@@ -32,7 +32,7 @@ namespace DesignPattern_ORM
         }
         public override string GetHavingStr()
         {
-            return this.havingCondition.toSQL(this.wrapeeQuery.featureMap);
+            return this.havingCondition.toSQL(this.wrapeeQuery.featureMap, this.wrapeeQuery.tableName);
         }
         public override string GetGroupByStr()
         {

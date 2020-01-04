@@ -19,7 +19,7 @@ namespace DesignPattern_ORM
         }
         public override int Execute()
         {
-            string conditionStr = condition.toSQL(featureMap);
+            string conditionStr = condition.toSQL(featureMap, tableName);
             if (conditionStr.Length == 0)
             {
                 throw new Exception("Delete condition is not specified");

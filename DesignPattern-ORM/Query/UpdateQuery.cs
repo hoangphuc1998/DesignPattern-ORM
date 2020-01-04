@@ -32,7 +32,7 @@ namespace DesignPattern_ORM
             {
                 throw new Exception("There is nothing to update");
             }
-            string conditionStr = condition.toSQL(featureMap);
+            string conditionStr = condition.toSQL(featureMap, tableName);
             if (conditionStr.Length == 0)
             {
                 throw new Exception("Update condition is not specified");

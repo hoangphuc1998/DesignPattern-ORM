@@ -26,7 +26,9 @@ namespace DesignPattern_ORM
             PropertyInfo[] propertyInfo = type.GetProperties();
             foreach (PropertyInfo pInfo in propertyInfo)
             {
-                if (pInfo.GetCustomAttribute<Column>() == null) continue;
+                if (pInfo.GetCustomAttribute<Column>() == null)
+                {continue;
+                };
                 featureMap.Add(pInfo.Name, pInfo.GetCustomAttribute<Column>().columnName.ToLower());
                 if (pInfo.GetCustomAttribute<Column>().isKey == true){
                     primaryKeys.Add(pInfo.Name);
