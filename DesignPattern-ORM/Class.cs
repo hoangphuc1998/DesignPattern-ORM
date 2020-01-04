@@ -13,5 +13,8 @@ namespace DesignPattern_ORM
         public string tenLop { get; set; }
         [Column("ListStudents")]
         public List<Student> dsHocSinh;
+
+        [HasMany("Student", "Id", "classid")]
+        public List<Student> x { get; set; }
     }
 }

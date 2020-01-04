@@ -51,7 +51,7 @@ namespace DesignPattern_ORM
                 List<string> firstRow = new List<string>();
                 for (int j = 0; j < numCol; j++)
                 {
-                    firstRow.Add(reader.GetName(j));
+                    firstRow.Add(reader.GetName(j).ToLower());
                 }
                 res.Add(firstRow);
                 if (reader.HasRows)

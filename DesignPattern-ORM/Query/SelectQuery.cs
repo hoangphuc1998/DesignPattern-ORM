@@ -166,5 +166,10 @@ namespace DesignPattern_ORM
             }
             return res;
         }
+
+        public Include<T> Include(Type type)
+        {
+            return new Include<T>(this, type);
+        }
     }
 }

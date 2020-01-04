@@ -38,10 +38,26 @@ namespace DesignPattern_ORM
             DBFactory factory2 = new PostgresFactory();
             DBManager dBManager2 = factory2.CreateDBManager("localhost",5432,"school","postgres","123");
             Parser parser2 = factory2.CreateParser();
+            /*
             ORMManager<Student> orm2 = new ORMManager<Student>(dBManager2, parser2);
-            Student student = new Student("Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
-            numCol = orm2.Insert(student).Execute();
-
+            // student = new Student("Trang Trung Hoang Phuc", true, "123@gmail.com", "1234546", "Tp.HCM", new DateTime(1998, 5, 24), 2);
+            //int numCol = orm2.Insert(student).Execute();
+            
+            List<Object> s = orm2.Select().Where(Condition.LessThanOrEqual("Id", 3)).ToList();
+            foreach (Object x in s)
+            {
+                Student student = (Student)x;
+                Console.WriteLine(student.Id + " " + student.ten);
+            }
+            */
+            ORMManager<Class> orm2 = new ORMManager<Class>(dBManager2, parser2);
+            List<Object> s = orm2.Select().Include(typeof(Student)).ToList();
+            foreach (Object x in s)
+            {
+                Class c = (Class)x;
+                Console.WriteLine(c.Id + " " + c.tenLop);
+            }
+            dBManager2.Disconnect();
         }
     }
 }
