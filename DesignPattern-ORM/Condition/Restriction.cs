@@ -34,11 +34,12 @@ namespace DesignPattern_ORM
                 throw new Exception("There is no \"" + param + "\" attribute in class");
             }
             string attr = featureMap[param];
+            attr = tableName + "." + attr;
             if (aggFunc.Length != 0)
             {
                 attr = aggFunc + "(" + attr + ")";
             }
-            return tableName + "." + attr + getRestrictionOperator() + parseValue(value);
+            return attr + getRestrictionOperator() + parseValue(value);
         }
     }
 }

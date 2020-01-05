@@ -77,7 +77,10 @@ namespace DesignPattern_ORM
             {
                 foreach (string projection in projections.Keys)
                 {
-                    select += tableName + "." + projection + " AS " + projections[projection] + ",";
+                    int index = projection.IndexOf("(");
+                    string p = projection.Substring(0, index + 1);
+                    p = p + tableName + "." + projection.Substring(index + 1);
+                    select += p + " AS " + projections[projection] + ",";
                 }
                 select = select.Remove(select.Length - 1, 1);
             }
